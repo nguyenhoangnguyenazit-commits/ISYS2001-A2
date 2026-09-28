@@ -1,4 +1,4 @@
-# Budget Breaker 💸
+# Budget Breaker 
 
 A small finance assistant built for **ISYS2001 – Introduction to Business Programming** (Assessment 2, Curtin University).
 
