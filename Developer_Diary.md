@@ -28,8 +28,6 @@ AI prompt used:
 What it returned:
 The AI provided the full Python function utilizing pandas.read_csv() and groupby(), along with a robust testing block checking for missing files, empty data, and incorrect data types.
 
-What I kept / changed / rejected:
-
 What I kept: I kept the core pandas logic for the budget calculations, especially the to_dict() conversion and the dictionary comprehensions, because they were incredibly clean and efficient for calculating the category percentages.
 
 What I changed: I updated the test values to accurately reflect the new Rent ($290.00) and total spent ($343.60) from my revised manual calculations. More importantly, I had to troubleshoot and fix several runtime errors myself: I hit a NameError because I hadn't run the import cell first, an AssertionError because I needed to properly upload my transactions.csv to Colab's /content/ folder, and a SyntaxError caused by overlapping code. Documenting and fixing these taught me a lot about how the Colab environment actually works.
