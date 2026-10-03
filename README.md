@@ -27,7 +27,7 @@ As a university student living in Perth, it's easy to lose track of minor daily 
 
 ```csv
 Date,Amount,Category,Description
-2023-10-01,18.50,Rent,Weekly share house rent portion
+2023-10-01,290.00,Rent,Weekly share house rent portion
 2023-10-01,5.20,Coffee,Flat white at uni cafe
 2023-10-02,42.30,Groceries,Woolworths weekly shop
 ...
@@ -44,7 +44,7 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
 ```python
 {
     'category_totals': {
-        'Rent': 92.5,
+        'Rent': 290.0,
         'Coffee': 27.8,
         'Groceries': 269.95,
         'Transport': 24.0,
@@ -53,7 +53,7 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
         'Entertainment': 52.0
     },
     'category_percentages': {
-        'Rent': 6.17,
+        'Rent': 19.33,
         'Coffee': 1.85,
         'Groceries': 17.99,
         'Transport': 1.6,
@@ -61,8 +61,8 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
         'Subscriptions': 4.0,
         'Entertainment': 3.47
     },
-    'total_spent': 624.95,
-    'remaining_balance': 875.05,
+    'total_spent': 822.45,
+    'remaining_balance': 677.55,
     'goal_achieved': True
 }
 ```
