@@ -96,4 +96,4 @@ If the file is missing, a required column is missing, the file is empty, or the 
 
 ## Author
 
-Nguyen Hoang Nguyen (Azit) — Business Information Systems, Curtin University
+Nguyen Hoang Nguyen (Azit)
