@@ -53,7 +53,7 @@ What I changed: I completely rewrote the JSON parsing section. Instead of a mass
 
 What I rejected: I strictly rejected any advanced Python shortcuts or "black box" techniques suggested earlier by the AI. If I couldn't confidently explain the logic using the core concepts taught in ISYS2001 (variables, loops, conditionals, basic dicts), I threw it out.
 
-## Week 3 07/10/2026
+## 07/10/2026
 
 ---
 
