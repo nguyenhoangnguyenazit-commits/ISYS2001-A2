@@ -70,28 +70,34 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
 If the file is missing, a required column is missing, the file is empty, or the input numbers don't make sense, the function prints a clear error message and returns `None` instead of crashing.
 
 ## How to run
+markdown
+## How to run
 
 1. Open `ISYS2001_A2.ipynb` in Google Colab.
-2. Run all cells top to bottom (`Runtime > Run all`).
-3. When prompted, enter your free Gemini API key from [Google AI Studio](https://aistudio.google.com/) — the notebook uses `getpass` so it's never saved into the notebook or repository.
-4. Upload your own `transactions.csv` (or use the sample in `data/`) into the Gradio interface, set your income and savings goal, and click "Analyse my budget".
-5. Type a question in the chat box and click "Ask" — the assistant's replies are grounded in your uploaded data.
+2. Add your Gemini API key to Colab Secrets before running: click the key icon (🔑) in the left sidebar, add a secret named exactly `GEMINI_API_KEY`, paste in your free key from [Google AI Studio](https://aistudio.google.com/), and switch on "Notebook access". The key is read with `userdata.get()`, so it never appears in the notebook or the repository.
+3. Run all cells top to bottom (`Runtime > Run all`).
+4. In the Gradio interface at the bottom, upload a transactions CSV (or use the sample in `data/`), set your monthly income and savings goal, optionally type a question for the assistant, then click **Submit**.
+5. You get two results side by side: the budget breakdown, and the assistant's reply — grounded in the numbers from the file you just uploaded.
 
+**Note:** the app does not need the API key to run. If no key is set, or if Gemini is unreachable, the assistant falls back to basic advice calculated from your own data rather than failing.
+Tech stack
+markdown
 ## Tech stack
 
-- **pandas** — loading and analysing CSV transaction data
-- **Gemini API** (`gemini-flash-latest`) — the conversational finance assistant
+- **pandas** — loading the CSV (`pd.read_csv`); the category analysis itself is written with plain dictionaries and loops
+- **Gemini API** (`gemini-3.8-flash`, called directly with `requests`) — the conversational finance assistant
 - **Gradio** — the user interface
 - Python `assert`-based tests for validation
-
+Repository structure
+markdown
 ## Repository structure
 
 ```
 ├── ISYS2001_A2.ipynb      # Main notebook (six-step method, code, chatbot, Gradio, tests)
 ├── data/
 │   └── transactions.csv   # Sample transaction data
-├── DIARY.md                # Developer's Diary
-└── README.md               # You are here
+├── DIARY.md               # Developer's Diary
+└── README.md              # You are here
 ```
 
 ## Author
