@@ -69,8 +69,7 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
 
 If the file is missing, a required column is missing, the file is empty, or the input numbers don't make sense, the function prints a clear error message and returns `None` instead of crashing.
 
-## How to run
-markdown
+
 ## How to run
 
 1. Open `ISYS2001_A2.ipynb` in Google Colab.
