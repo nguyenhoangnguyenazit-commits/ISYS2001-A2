@@ -44,7 +44,7 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
 ```python
 {
     'category_totals': {
-        'Rent': 290.0,
+        'Rent': 1160.0,
         'Coffee': 27.8,
         'Groceries': 269.95,
         'Transport': 24.0,
@@ -61,9 +61,9 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
         'Subscriptions': 4.0,
         'Entertainment': 3.47
     },
-    'total_spent': 822.45,
-    'remaining_balance': 677.55,
-    'goal_achieved': True
+    'total_spent': 1721.85,
+    'remaining_balance': -221.85,
+    'goal_achieved': 	False
 }
 ```
 
