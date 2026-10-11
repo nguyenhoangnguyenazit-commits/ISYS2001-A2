@@ -194,3 +194,54 @@ another list; the first part has the key `text`, which is the actual answer.
 I also ran `print(data)` once to see the raw structure on screen rather than trusting a
 description of it. That was worth doing — reading the real nesting made the indexes
 obvious in a way the explanation alone did not.
+
+## Week [X] — 11 October 2026
+
+**Goal:** Get the Gemini assistant responding reliably after days of 503, timeout
+and 429 errors.
+
+**What fixed it:** switching the model from `gemini-2.5-flash` to `gemini-3.8-flash`.
+One line changed:
+
+```python
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
+```
+
+**Where the idea came from:** a classmate mentioned they had the same problem and that
+switching to a newer model worked for them. I did not take it on trust — I already had
+the list of models my key can reach, from the diagnostic I ran during the earlier
+debugging session:
+
+```python
+url = f"https://generativelanguage.googleapis.com/v1beta/models?key={GEMINI_API_KEY}"
+r = requests.get(url, timeout=30)
+```
+
+`gemini-3.8-flash` was in that list, so I knew it was a real model available to my key
+rather than a name someone half-remembered. That is why I was willing to try it.
+
+<img width="1544" height="313" alt="image" src="https://github.com/user-attachments/assets/4ccdd35b-5c12-42f3-b1be-6ca9b986af47" />
+
+
+**Why I think it worked:** the free tier appears to count quota per model, so the newer
+model had headroom the one I had been hammering did not. My last error before this was
+429 (rate limit), not a code error — so the fix was never going to be in my own logic.
+
+**The sequence of models I went through, and why each time:**
+
+| Model | Why I moved on |
+| --- | --- |
+| `gemini-flash-latest` | The alias the unit spec suggests. Returned 503 and timeouts repeatedly |
+| `gemini-2.5-flash` | A specific stable model, to rule out the alias pointing somewhere busy. Still hit 429 |
+| `gemini-3.8-flash` | Confirmed available to my key via the models endpoint. Works |
+
+**A trade-off I am accepting:** the spec recommends the `gemini-flash-latest` alias
+because it keeps you on the current free Flash model as Google updates it. I have pinned
+a specific model instead, which means it will not follow those updates. I decided a
+model that responds today is worth more than one that auto-updates but does not answer.
+The retry loop stays in regardless, since a working model can still have a bad minute.
+
+**What I would do differently:** spend less time assuming the fault was mine. I rewrote
+the retry logic several times before running the diagnostic that showed the key and
+network were fine. Checking what was actually reachable, earlier, would have saved a
+session.
