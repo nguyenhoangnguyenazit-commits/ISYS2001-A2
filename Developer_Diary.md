@@ -195,7 +195,7 @@ I also ran `print(data)` once to see the raw structure on screen rather than tru
 description of it. That was worth doing — reading the real nesting made the indexes
 obvious in a way the explanation alone did not.
 
-## Week [X] — 11 October 2026
+## 11 October 2026
 
 **Goal:** Get the Gemini assistant responding reliably after days of 503, timeout
 and 429 errors.
