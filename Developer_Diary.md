@@ -64,7 +64,7 @@ What I rejected: I strictly rejected any advanced Python shortcuts or "black box
 > `read_csv` and `.sum()`, Module 8 API calls, Module 9 Gradio, Module 10-11 testing)
 > and asked it to check whether my code went beyond that scope.
 
-[SCREENSHOT: <img width="574" height="887" alt="image" src="https://github.com/user-attachments/assets/7234c15f-25f2-4775-adca-4c2828fd215f" />]
+<img width="574" height="887" alt="image" src="https://github.com/user-attachments/assets/7234c15f-25f2-4775-adca-4c2828fd215f" />
 
 
 **What it returned:** It flagged four things — `raise ValueError(...)`, `df.groupby()`,
@@ -121,7 +121,7 @@ often. It suggested the free tier can take longer than 15 seconds to respond, es
 on the first call. I raised the timeout to 30 and added a retry loop:
 `for attempt in range(3)` with `time.sleep(2)` between attempts.
 
-[SCREENSHOT: <img width="1203" height="260" alt="image" src="https://github.com/user-attachments/assets/507fbd16-796b-4f3c-89af-ffb77cb9a92b" />]
+<img width="1203" height="260" alt="image" src="https://github.com/user-attachments/assets/507fbd16-796b-4f3c-89af-ffb77cb9a92b" />
 
 **Problem 2 — 503 Service Unavailable.**
 Then I started getting `503`, which is a server-side error, not a code error. Added a
@@ -139,7 +139,7 @@ print("Reached Google, status:", r.status_code)
 This returned `404`, which confirmed my network reaches Google fine — a 404 just means
 that bare domain has no page. So the problem was not my internet or a firewall.
 
-[SCREENSHOT: <img width="243" height="67" alt="image" src="https://github.com/user-attachments/assets/c3c4b71a-a661-4bd0-81e4-33f2aa3939ca" />]
+<img width="243" height="67" alt="image" src="https://github.com/user-attachments/assets/c3c4b71a-a661-4bd0-81e4-33f2aa3939ca" />
 
 **Problem 4 — was it my key?**
 Next I called the models endpoint to check the key itself:
@@ -152,7 +152,7 @@ r = requests.get(url, timeout=30)
 This returned `200` and a full list of available models. So the key works, the network
 works, and the problem was specific to the `generateContent` endpoint.
 
-[SCREENSHOT: <img width="344" height="703" alt="image" src="https://github.com/user-attachments/assets/371bc519-e6f8-419e-aad7-e7c174efa2d8" />]
+<img width="344" height="703" alt="image" src="https://github.com/user-attachments/assets/371bc519-e6f8-419e-aad7-e7c174efa2d8" />
 
 **Problem 5 — the actual cause.**
 I switched from the `gemini-flash-latest` alias to `gemini-2.5-flash` to rule out a
