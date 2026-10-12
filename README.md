@@ -93,7 +93,7 @@ If the file is missing, a required column is missing, the file is empty, or the 
 ├── ISYS2001_A2.ipynb      # Main notebook (six-step method, code, chatbot, Gradio, tests)
 ├── data/
 │   └── transactions.csv   # Sample transaction data
-├── DIARY.md               # Developer's Diary
+├── Developer_Diary.md     # Developer's Diary
 └── README.md              # You are here
 ```
 ## Known limitations
