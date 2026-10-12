@@ -7,7 +7,7 @@ AI prompt used:
 "Act as a senior Python mentor. I am a university student working on a finance assistant project. Help me draft the Business Problem, Inputs/Outputs, and Pseudocode for a CommBank-style 'Budget Breaker' app. Also, generate 30 rows of mock bank statement data in CSV format for a student living in Perth. Finally, give me a good structure for the README file."
 
 What it returned:
-The AI generated a highly realistic 30-row CSV dataset featuring local Perth spots (Coles Karawara, Transperth, Curtin Guild Cafe). It also provided a clear breakdown for Steps 1-4 and a very professional, comprehensive README template including a features checklist and tech stack.
+The AI generated a highly realistic 30-row CSV dataset featuring local Perth spots. It also provided a clear breakdown for Steps 1-4 and a very professional, comprehensive README template including a features checklist and tech stack.
 
 
 What I kept: I kept the mock CSV data entirely because it accurately reflects my real spending habits as a Curtin student while protecting my actual banking privacy. I also kept the core structure of the Business Problem and Inputs/Outputs as it perfectly framed my idea.
@@ -400,6 +400,21 @@ That is the fallback design and the data grounding both working in one answer.
 
 <img width="1140" height="641" alt="image" src="https://github.com/user-attachments/assets/07741540-8d22-48c3-8ed0-ea2938d0cecf" />
 
+
+### 8. The bug that only existed on a fresh run
+
+When I rewrote the Gemini cell around `call_gemini()`, I accidentally deleted
+`PERSONA` and `offline_advice()`. The app still worked for me, because both were
+still in my Colab session's memory from the earlier version of the cell. On a
+fresh runtime, it crashed with `NameError: name 'PERSONA' is not defined` as soon
+as a question was asked.
+
+This was the same thing I noticed on 12 October, where a function kept working
+after its cell failed, but this time it hid a real bug instead of saving me.
+
+**What I changed:** I now test with Runtime → Disconnect and delete runtime →
+Run all. Restarting is not enough, because it does not clear the old variables.
+This is the only way to see the notebook the way my marker will.
 
 ---
 
