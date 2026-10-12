@@ -416,6 +416,19 @@ working after its cell failed, but this time it hid a real bug instead of saving
 Run all. Restarting is not enough, because it does not clear the old variables.
 This is the only way to see the notebook the way my marker will.
 
+### 9. Removing the test call from the Gemini cell
+
+I had a quick off-topic test at the bottom of the Gemini cell:
+`print(ask_assistant("Where is Perth city?"))`. I removed it, because it
+fired a real API request every time the notebook ran, which slowed down "Run all"
+and used up free-tier quota before the app was even open.
+
+I still checked the off-topic behaviour once, through the Gradio interface. The
+assistant answered briefly and steered the conversation back to budgeting, which
+is what the persona instruction asks for.
+
+<img width="1044" height="460" alt="image" src="https://github.com/user-attachments/assets/2c79d4ec-0366-4cbc-ae2f-c451002e10bc" />
+
 ---
 
 ### Reflection
