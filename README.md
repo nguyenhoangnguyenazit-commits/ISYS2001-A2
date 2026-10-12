@@ -27,9 +27,9 @@ As a university student living in Perth, it's easy to lose track of minor daily 
 
 ```csv
 Date,Amount,Category,Description
-2023-10-01,290.00,Rent,Weekly share house rent portion
-2023-10-01,5.20,Coffee,Flat white at uni cafe
-2023-10-02,42.30,Groceries,Woolworths weekly shop
+1/10/2023,290,Rent,Weekly share house rent portion
+1/10/2023,5.2,Coffee,Flat white at uni cafe
+2/10/2023,42.3,Groceries,Woolworths weekly shop
 ...
 ```
 
