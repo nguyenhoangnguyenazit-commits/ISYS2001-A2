@@ -98,20 +98,20 @@ If the file is missing, a required column is missing, the file is empty, or the 
 ```
 ## Known limitations
 
-**The Gemini assistant is not always instant.** The free tier of the Gemini API
-rate-limits requests and occasionally returns a 503 when Google's servers are busy.
-The app handles this rather than crashing:
+**The Gemini assistant is not always instant.** The free tier rate-limits requests
+(429), and Google's servers are occasionally busy (503). The app handles this rather
+than crashing:
 
-- It retries up to 3 times, waiting longer after each attempt (10s, 20s, 30s)
-- If all three fail, it falls back to `offline_advice()`, which still calculates
-  real insights from your uploaded data — just without the conversational wording.
-  The reply is clearly labelled so you know Gemini was not reached
-- The budget breakdown itself never depends on the API, so it always works
+- It tries five Flash models in order, each with its own free-tier quota, and uses
+  the first one that answers
+- If all five fail, or no API key is set, it falls back to `offline_advice()`, which
+  still gives advice from your uploaded data. The reply is clearly labelled so you
+  know Gemini was not reached
+- The budget breakdown never depends on the API, so it always works
 
-If the assistant reply looks empty or stalls, submitting again usually works.
-Space out your requests rather than clicking repeatedly — rapid clicks make the
-rate limit worse, not better.
-
+In the worst case, when every model times out, the fallback can take a couple of
+minutes to appear. Space out your requests rather than clicking repeatedly — rapid
+clicks make the rate limit worse, not better.
 ## Author
 
 Nguyen Hoang Nguyen (Azit)
