@@ -12,7 +12,7 @@ The AI generated a highly realistic 30-row CSV dataset featuring local Perth spo
 
 What I kept: I kept the mock CSV data entirely because it accurately reflects my real spending habits as a Curtin student while protecting my actual banking privacy. I also kept the core structure of the Business Problem and Inputs/Outputs as it perfectly framed my idea.
 
-What I changed: I modified the AI's README template to match my actual repository. For example, I changed the suggested filename from ISYS2001_A2.ipynb to finance_assistant.ipynb and updated the feature status since I haven't coded them yet.
+What I changed: I modified the AI's README template to match my actual repository. For example, I changed the suggested filename from finance_assistant.ipynb to ISYS2001_A2.ipynb and updated the feature status since I haven't coded them yet.
 <img width="1020" height="899" alt="image" src="https://github.com/user-attachments/assets/57711674-e884-44d0-97ed-dabec5b86b2d" />
 
 
@@ -409,8 +409,8 @@ still in my Colab session's memory from the earlier version of the cell. On a
 fresh runtime, it crashed with `NameError: name 'PERSONA' is not defined` as soon
 as a question was asked.
 
-This was the same thing I noticed on 12 October, where a function kept working
-after its cell failed, but this time it hid a real bug instead of saving me.
+This was the same thing I noticed earlier today (section 3), where a function kept
+working after its cell failed, but this time it hid a real bug instead of saving me.
 
 **What I changed:** I now test with Runtime → Disconnect and delete runtime →
 Run all. Restarting is not enough, because it does not clear the old variables.
