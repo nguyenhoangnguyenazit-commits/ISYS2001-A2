@@ -13,6 +13,8 @@ The AI generated a highly realistic 30-row CSV dataset featuring local Perth spo
 What I kept: I kept the mock CSV data entirely because it accurately reflects my real spending habits as a Curtin student while protecting my actual banking privacy. I also kept the core structure of the Business Problem and Inputs/Outputs as it perfectly framed my idea.
 
 What I changed: I modified the AI's README template to match my actual repository. For example, I changed the suggested filename from ISYS2001_A2.ipynb to finance_assistant.ipynb and updated the feature status since I haven't coded them yet.
+<img width="1020" height="899" alt="image" src="https://github.com/user-attachments/assets/57711674-e884-44d0-97ed-dabec5b86b2d" />
+
 
 What I rejected: I completely rejected the AI's attempt to give me the actual Python code this week. My strict goal was to finish the pseudocode and design logic first. I will tackle the actual coding and Pandas implementation in Week 2 so I can fully understand how to build the tool myself.
 
@@ -415,9 +417,3 @@ as the same failure.
 
 ---
 
-### Next steps
-- [ ] Fix the Markdown headings (`##3.` → `## 3.`) and remove the duplicated "Step 3" heading
-- [ ] Update the testing description to match the actual tests (same 4-row sample, 6 error cases)
-- [ ] Handle empty income or goal in `run_app` and make the error message say what is really wrong
-- [ ] Update the Section 7 markdown to describe the model fallback and offline advice
-- [ ] Save the notebook to GitHub
