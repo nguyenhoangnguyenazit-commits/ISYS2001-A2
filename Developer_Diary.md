@@ -245,3 +245,179 @@ The retry loop stays in regardless, since a working model can still have a bad m
 the retry logic several times before running the diagnostic that showed the key and
 network were fine. Checking what was actually reachable, earlier, would have saved a
 session.
+
+## Week 4 — 12 October 2026
+
+**Goal:** Review the whole notebook for hidden bugs, fix the Gradio crash, and make
+the Gemini assistant reliable enough that it does not depend on one model staying up.
+
+Everything that broke today was outside my budget logic. The calculations and tests
+were fine; the problems came from the Colab environment, the Gradio library, and
+depending on an external API.
+
+---
+
+### 1. Code review: bugs the tests never caught
+
+**What I asked the AI:**
+"Here is my core break_down_budget function and my current test suite. Please act as a QA tester and review my code one last time. Are there any edge cases, weird inputs, or user errors that my code would crash on, which my current tests have missed?"
+
+**What it returned:** Five problems, none of which my tests had caught:
+
+| Problem | Why it matters |
+|---|---|
+| `gr.Number` returns `None` when the box is cleared, and `None <= 0` raises a `TypeError` | The app crashes on an input a real user could easily give |
+| The Gradio error always said "check it has Amount and Category columns", even when the real cause was income of 0 | Misleading message sends the user to fix the wrong thing |
+| `time.sleep()` ran after the **last** retry attempt as well | 30 seconds of waiting for nothing before giving up |
+| The API key sat in the URL, so a failed request could print it in the error | A key leaked into a traceback is a leaked key |
+| Markdown headings written `##3.` with no space | They render as plain text, not headings |
+
+**What I kept:** all five. I had no counter-argument to any of them — each one was a
+case I simply had not thought to test.
+
+**What I learned:** passing tests does not mean the code is correct. My tests only
+covered the inputs I had imagined. The `None` income bug is the clearest example:
+every assert passed, and the app still crashes if someone clears a box.
+
+---
+
+### 2. The Gradio crash: `module 'gradio' has no attribute 'Request'`
+
+**The problem:** the Gradio cell crashed inside the library itself, not in my code.
+The traceback ran through `gradio/flagging.py` while Gradio was setting up its Flag
+button.
+
+<img width="601" height="161" alt="image" src="https://github.com/user-attachments/assets/e6f6fd9f-c4c9-4c28-8f06-96e8d7dbe5ce" />
+
+
+**How I read it:** every line in the traceback was inside the library. That is the
+signal that the problem is the environment, not my logic — a version loaded in memory
+that did not match the one installed on disk.
+
+**What I did:** restarted the runtime, and added `flagging_mode="never"` to
+`gr.Interface` since my app has no use for a Flag button. I also added `debug=True`
+to `launch()` so errors raised inside the app are actually shown rather than
+swallowed.
+
+**What I learned:** read where the traceback *stops being my code*. If none of it is
+mine, stop editing my code.
+
+---
+
+### 3. The Gemini timeout, and why the app still worked
+
+**The problem:** the quick test at the bottom of the Gemini cell failed with
+`Read timed out (read timeout=60)`. The retry loop then waited and tried again, so I
+stopped the cell manually and got a `KeyboardInterrupt`.
+
+**What confused me:** the Gemini cell failed, but the assistant still worked inside
+Gradio. That made no sense to me at first.
+
+**What I worked out:** Python runs a cell top to bottom. `ask_assistant` was already
+*defined* before the last line — the test call — got stuck. So the function existed
+in memory regardless of whether the test call succeeded. The timeout was a temporary
+problem on Google's side, not a broken function.
+
+**The arithmetic that made the delay obvious:** 3 attempts × 60s timeout, plus waits
+of 10 + 20 + 30 seconds, is about 4 minutes in the worst case. That is why the app
+had been appearing to hang.
+
+---
+
+### 4. The assistant's reply showed raw Markdown
+
+**The problem:** replies appeared in the app as `**$222 over budget**` — asterisks and
+all.
+
+**The cause:** Gemini writes in Markdown, but `gr.Textbox` only displays plain text.
+
+**What I did:** changed that output to `gr.Markdown`, so bold text and bullet points
+render properly.
+
+---
+
+### 5. Rewriting the assistant around model fallback
+
+ I split the Gemini code into two functions:
+
+- `call_gemini(model, payload)` — sends one request to one model, returns the reply
+  text, or `None` if it fails
+- `ask_assistant(message, budget_summary)` — builds the request, then loops through
+  `GEMINI_MODELS` until one works. If every model fails, it returns `offline_advice()`
+  built from the user's real numbers
+
+I also moved the API key out of the URL and into the request headers, so it cannot
+appear in an error message.
+
+**What I deliberately kept simple:** I still unwrap the JSON one layer at a time, and
+the fallback is a plain `for` loop with `if`/`else` and `try`/`except`. A cleverer
+version would have been shorter, but I need to explain every line in the oral defence.
+
+---
+
+### 6. Errors 404 and 429, and why my first backup list was useless
+
+My first attempt at a backup list still failed:
+
+- **404 (Not Found)** — I had *guessed* model names like `gemini-1.5-flash-8b`. Guessed
+  names are not real models.
+- **429 (Too Many Requests)** — `gemini-3.8-flash` had hit the free tier limit, because
+  I had run the cell many times while testing.
+
+**The thing I actually found interesting:** `gemini-flash-latest` returned 429 at the
+same moment as `gemini-3.8-flash`. A `latest` name is only an alias pointing at a real
+model, so it draws on the *same quota*. As a backup it is worthless — it fails at
+exactly the same time as the model it points to.
+
+**What I did instead of guessing:** asked the API which models my key can actually
+reach, and picked five stable flash models from that list, each with its own quota:
+
+```python
+GEMINI_MODELS = [
+    "gemini-3.8-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.7-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-3.6-flash"
+]
+```
+
+I left out preview, pro, tts, image and alias models — unstable, lower free limits, or
+they do not return text at all.
+
+---
+
+### 7. The result
+
+In the final test, `gemini-3.8-flash` still returned 429, and the app switched to
+`gemini-3.5-flash-lite` on its own and replied in under a second.
+
+I asked it how long it would take me to buy a $3000 car. It used my real figure —
+$778.15 left over per month — and answered about 4 months (3000 ÷ 778.15 ≈ 3.86).
+That is the fallback design and the data grounding both working in one answer.
+
+<img width="1140" height="641" alt="image" src="https://github.com/user-attachments/assets/07741540-8d22-48c3-8ed0-ea2938d0cecf" />
+
+
+---
+
+### Reflection
+
+A program that depends on an external API can never be completely reliable, because I
+do not control the server. What I control is how my program behaves when the API
+fails. With a list of backup models and an offline fallback, the user always gets a
+useful answer and the app never crashes.
+
+The other lesson is to read error codes as information rather than noise. 404 means
+the thing does not exist — stop guessing names. 429 means too many requests — stop
+hammering it. Both told me exactly what to do, once I stopped treating every failure
+as the same failure.
+
+---
+
+### Next steps
+- [ ] Fix the Markdown headings (`##3.` → `## 3.`) and remove the duplicated "Step 3" heading
+- [ ] Update the testing description to match the actual tests (same 4-row sample, 6 error cases)
+- [ ] Handle empty income or goal in `run_app` and make the error message say what is really wrong
+- [ ] Update the Section 7 markdown to describe the model fallback and offline advice
+- [ ] Save the notebook to GitHub
