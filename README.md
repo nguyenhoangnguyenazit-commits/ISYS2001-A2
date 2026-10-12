@@ -83,7 +83,7 @@ If the file is missing, a required column is missing, the file is empty, or the 
 ## Tech stack
 
 - **pandas** — loading the CSV (`pd.read_csv`); the category analysis itself is written with plain dictionaries and loops
-- **Gemini API** (`gemini-3.8-flash`, called directly with `requests`) — the conversational finance assistant
+- **Gemini API** (called directly with `requests`; tries `gemini-3.8-flash` first, then four backup Flash models) — the conversational finance assistant
 - **Gradio** — the user interface
 - Python `assert`-based tests for validation
 
@@ -96,6 +96,21 @@ If the file is missing, a required column is missing, the file is empty, or the 
 ├── DIARY.md               # Developer's Diary
 └── README.md              # You are here
 ```
+## Known limitations
+
+**The Gemini assistant is not always instant.** The free tier of the Gemini API
+rate-limits requests and occasionally returns a 503 when Google's servers are busy.
+The app handles this rather than crashing:
+
+- It retries up to 3 times, waiting longer after each attempt (10s, 20s, 30s)
+- If all three fail, it falls back to `offline_advice()`, which still calculates
+  real insights from your uploaded data — just without the conversational wording.
+  The reply is clearly labelled so you know Gemini was not reached
+- The budget breakdown itself never depends on the API, so it always works
+
+If the assistant reply looks empty or stalls, submitting again usually works.
+Space out your requests rather than clicking repeatedly — rapid clicks make the
+rate limit worse, not better.
 
 ## Author
 
