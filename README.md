@@ -45,25 +45,25 @@ result = break_down_budget("data/transactions.csv", monthly_income=1500, saving_
 {
     'category_totals': {
         'Rent': 1160.0,
-        'Coffee': 27.8,
+        'Coffee': 33.9,
         'Groceries': 269.95,
-        'Transport': 24.0,
-        'Eating Out': 98.7,
+        'Transport': 28.8,
+        'Eating Out': 117.2,
         'Subscriptions': 60.0,
         'Entertainment': 52.0
     },
-    'category_percentages': {
-        'Rent': 19.33,
-        'Coffee': 1.85,
-        'Groceries': 17.99,
-        'Transport': 1.6,
-        'Eating Out': 6.58,
+    'category_percentages': {   # rounded to 2 decimal places here
+        'Rent': 77.33,
+        'Coffee': 2.26,
+        'Groceries': 18.0,
+        'Transport': 1.92,
+        'Eating Out': 7.81,
         'Subscriptions': 4.0,
         'Entertainment': 3.47
     },
     'total_spent': 1721.85,
     'remaining_balance': -221.85,
-    'goal_achieved': 	False
+    'goal_achieved': False
 }
 ```
 
