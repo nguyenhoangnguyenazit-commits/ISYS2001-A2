@@ -79,16 +79,14 @@ If the file is missing, a required column is missing, the file is empty, or the 
 5. You get two results side by side: the budget breakdown, and the assistant's reply — grounded in the numbers from the file you just uploaded.
 
 **Note:** the app does not need the API key to run. If no key is set, or if Gemini is unreachable, the assistant falls back to basic advice calculated from your own data rather than failing.
-Tech stack
-markdown
+
 ## Tech stack
 
 - **pandas** — loading the CSV (`pd.read_csv`); the category analysis itself is written with plain dictionaries and loops
 - **Gemini API** (`gemini-3.8-flash`, called directly with `requests`) — the conversational finance assistant
 - **Gradio** — the user interface
 - Python `assert`-based tests for validation
-Repository structure
-markdown
+
 ## Repository structure
 
 ```
